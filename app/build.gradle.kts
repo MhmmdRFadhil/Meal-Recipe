@@ -108,6 +108,9 @@ dependencies {
     implementation(Dependencies.Deps.glide)
     ksp(Dependencies.Deps.glideCompiler)
 
+    // PALETTE
+    implementation(Dependencies.Deps.palette)
+
     // TESTING
     testImplementation(Dependencies.Deps.jUnit)
     androidTestImplementation(Dependencies.Deps.jUnitTest)

@@ -8,7 +8,6 @@ object Versions {
     const val jUnitTestVersion = "1.1.5"
     const val espressoVersion = "3.5.1"
 
-    
     const val viewModelVersion = "2.6.2"
     const val daggerVersion = "2.50"
     const val navVersion = "2.7.6"
@@ -16,4 +15,5 @@ object Versions {
     const val retrofitVersion = "2.9.0"
     const val roomVersion = "2.6.1"
     const val glideVersion = "4.16.0"
+    const val paletteVersion = "1.0.0"
 }
