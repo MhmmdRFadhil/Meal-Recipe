@@ -1,29 +1,65 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs")
+    id("com.google.devtools.ksp")
 }
 
 android {
     namespace = "com.ryz.mealrecipe"
-    compileSdk = 34
+    compileSdk = (ConfigData.compileSdkVersion)
 
     defaultConfig {
         applicationId = "com.ryz.mealrecipe"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = (ConfigData.minSdkVersion)
+        targetSdk = (ConfigData.targetSdkVersion)
+        versionCode = (ConfigData.versionCode)
+        versionName = (ConfigData.versionName)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true",
+                    "room.expandProjection" to "true"
+                )
+            }
+        }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+            isMinifyEnabled = false
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+
+        flavorDimensions.add("api")
+
+        productFlavors {
+            create("dev") {
+                this.dimension = "api"
+                buildConfigField("String", "BASE_URL", "\"https://www.themealdb.com/\"")
+            }
+            create("prod") {
+                this.dimension = "api"
+                buildConfigField("String", "BASE_URL", "\"https://www.themealdb.com/\"")
+            }
         }
     }
     compileOptions {
@@ -33,15 +69,47 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(Dependencies.Deps.core)
+    implementation(Dependencies.Deps.appCompat)
     implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(Dependencies.Deps.constrainLayout)
+
+    // VIEW MODEL
+    implementation(Dependencies.Deps.lifecycleLiveData)
+    implementation(Dependencies.Deps.lifecycleViewModel)
+
+    // DAGGER HILT
+    implementation(Dependencies.Deps.hiltAndroid)
+    kapt(Dependencies.Deps.hiltCompiler)
+
+    // NAVIGATION GRAPH
+    implementation(Dependencies.Deps.navigationFragment)
+    implementation(Dependencies.Deps.navigationUi)
+
+    // RETROFIT
+    implementation(Dependencies.Deps.okHttpLoggingInterceptor)
+    implementation(Dependencies.Deps.retrofitConverterGson)
+    implementation(Dependencies.Deps.retrofit)
+
+    // ROOM
+    implementation(Dependencies.Deps.roomRuntime)
+    implementation(Dependencies.Deps.roomKtx)
+    ksp(Dependencies.Deps.roomCompiler)
+
+    // GLIDE
+    implementation(Dependencies.Deps.glide)
+    ksp(Dependencies.Deps.glideCompiler)
+
+    // TESTING
+    testImplementation(Dependencies.Deps.jUnit)
+    androidTestImplementation(Dependencies.Deps.jUnitTest)
+    androidTestImplementation(Dependencies.Deps.espresso)
 }
