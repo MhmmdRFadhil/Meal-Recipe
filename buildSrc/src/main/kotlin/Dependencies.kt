@@ -41,5 +41,7 @@ object Dependencies {
         // GLIDE
         val glide by lazy { "com.github.bumptech.glide:glide:${Versions.glideVersion}" }
         val glideCompiler by lazy { "com.github.bumptech.glide:compiler:${Versions.glideVersion}" }
+
+        val palette by lazy { "androidx.palette:palette-ktx:${Versions.paletteVersion}" }
     }
 }
