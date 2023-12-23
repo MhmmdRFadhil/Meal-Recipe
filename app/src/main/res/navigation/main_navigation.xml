@@ -26,7 +26,12 @@
         tools:layout="@layout/fragment_bookmark" >
         <action
             android:id="@+id/action_bookmarkFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_bookmarkFragment_to_homeDetailFragment"
+            app:destination="@id/homeDetailFragment" />
     </fragment>
     <dialog
         android:id="@+id/filterDialogFragment"

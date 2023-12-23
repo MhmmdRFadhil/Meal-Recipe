@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/semi_primary_color"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="0dp">
+
+    <TextView
+        android:id="@+id/tv_tags_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/poppins_semi_bold"
+        android:textColor="@color/md_theme_light_primary"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view_contain_background"
+        app:layout_constraintEnd_toEndOf="@+id/view_contain_background"
+        app:layout_constraintStart_toStartOf="@+id/view_contain_background"
+        app:layout_constraintTop_toTopOf="@+id/view_contain_background"
+        tools:text="@tools:sample/lorem" />
+</androidx.cardview.widget.CardView>

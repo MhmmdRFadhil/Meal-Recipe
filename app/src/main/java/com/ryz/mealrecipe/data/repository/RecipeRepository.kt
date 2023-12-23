@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {
     suspend fun insertRecipe(mealEntity: MealEntity)
-    suspend fun deleteRecipe(mealEntity: MealEntity)
+    suspend fun deleteRecipe(id: String)
     fun getRecipe(): LiveData<List<MealEntity>>
+    fun isRowExists(id: String?): Int
     suspend fun searchMealByName(searchWithName: String): Flow<MealResponse>
     suspend fun listByCategory(): Flow<MealResponse>
     suspend fun listByArea(): Flow<MealResponse>

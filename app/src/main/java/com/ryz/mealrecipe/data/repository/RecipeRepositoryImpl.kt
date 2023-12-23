@@ -21,11 +21,13 @@ class RecipeRepositoryImpl @Inject constructor(
         dao.insertRecipe(mealEntity)
     }
 
-    override suspend fun deleteRecipe(mealEntity: MealEntity) {
-        dao.deleteRecipe(mealEntity)
+    override suspend fun deleteRecipe(id: String) {
+        dao.deleteRecipe(id)
     }
 
     override fun getRecipe(): LiveData<List<MealEntity>> = dao.getAllList()
+
+    override fun isRowExists(id: String?): Int = dao.isRowExists(id)
 
     override suspend fun searchMealByName(searchWithName: String): Flow<MealResponse> = flow {
         val response = service.searchMealByName(searchWithName)

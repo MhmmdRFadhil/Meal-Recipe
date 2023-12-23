@@ -111,6 +111,9 @@ dependencies {
     // PALETTE
     implementation(Dependencies.Deps.palette)
 
+    // FLEXBOX
+    implementation(Dependencies.Deps.flexbox)
+
     // TESTING
     testImplementation(Dependencies.Deps.jUnit)
     androidTestImplementation(Dependencies.Deps.jUnitTest)

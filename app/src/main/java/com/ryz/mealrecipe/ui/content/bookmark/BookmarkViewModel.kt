@@ -8,4 +8,5 @@ import javax.inject.Inject
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(private val repository: RecipeRepository) :
     ViewModel() {
+    fun getAllList() = repository.getRecipe()
 }

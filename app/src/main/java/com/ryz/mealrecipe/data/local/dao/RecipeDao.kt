@@ -9,9 +9,12 @@ interface RecipeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecipe(mealEntity: MealEntity)
 
-    @Delete
-    suspend fun deleteRecipe(mealEntity: MealEntity)
+    @Query("DELETE FROM recipes WHERE idMeal =:idMeal")
+    suspend fun deleteRecipe(idMeal: String)
 
     @Query("SELECT * FROM recipes")
     fun getAllList(): LiveData<List<MealEntity>>
+
+    @Query("SELECT count(*) FROM recipes WHERE idMeal=:idMeal")
+    fun isRowExists(idMeal: String?): Int
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ryz.mealrecipe.common.ErrorHelper
 import com.ryz.mealrecipe.common.Resource
 import com.ryz.mealrecipe.data.remote.response.MealResponse
 import com.ryz.mealrecipe.data.repository.RecipeRepository
@@ -35,7 +36,8 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
         repository.listByCategory().onStart {
             _categoryList.postValue(Resource.Loading())
         }.catch { exception ->
-            _categoryList.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _categoryList.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _categoryList.postValue(Resource.Success(result))
         }
@@ -45,7 +47,8 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
         repository.listByArea().onStart {
             _areaList.postValue(Resource.Loading())
         }.catch { exception ->
-            _areaList.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _areaList.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _areaList.postValue(Resource.Success(result))
         }
@@ -55,7 +58,8 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
         repository.filterByCategory(name).onStart {
             _filterCategory.postValue(Resource.Loading())
         }.catch { exception ->
-            _filterCategory.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _filterCategory.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _filterCategory.postValue(Resource.Success(result))
         }
@@ -65,7 +69,8 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
         repository.filterByArea(area).onStart {
             _filterArea.postValue(Resource.Loading())
         }.catch { exception ->
-            _filterArea.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _filterArea.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _filterArea.postValue(Resource.Success(result))
         }
@@ -75,7 +80,8 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
         repository.searchMealByName(name).onStart {
             _searchMeal.postValue(Resource.Loading())
         }.catch { exception ->
-            _searchMeal.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _searchMeal.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _searchMeal.postValue(Resource.Success(result))
         }

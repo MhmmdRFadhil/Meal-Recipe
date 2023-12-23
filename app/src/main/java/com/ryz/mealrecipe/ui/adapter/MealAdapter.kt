@@ -9,8 +9,9 @@ import com.ryz.mealrecipe.common.loadImageUrl
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.RowItemMealBinding
 
-class MealAdapter(private val clickListener: (String) -> Unit) :
-    ListAdapter<MealEntity, MealAdapter.MealViewHolder>(DIFF_CALLBACK) {
+class MealAdapter(
+    private val clickListener: (String) -> Unit
+) : ListAdapter<MealEntity, MealAdapter.MealViewHolder>(DIFF_CALLBACK) {
 
     private var dataList: ArrayList<MealEntity> = ArrayList()
     private var dataListFiltered: ArrayList<MealEntity> = ArrayList()
@@ -22,16 +23,10 @@ class MealAdapter(private val clickListener: (String) -> Unit) :
                 tvMeal.text = data.strMeal
                 imgMeal.loadImageUrl(data.strMealThumb)
                 itemView.setOnClickListener {
-                    clickListener(data.idMeal.toString())
+                    clickListener.invoke(data.idMeal.toString())
                 }
             }
         }
-    }
-
-    fun add(list: List<MealEntity>) {
-        dataList = list as ArrayList<MealEntity>
-        dataListFiltered = dataList
-        submitList(dataListFiltered.sortedBy { it.strMeal })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {

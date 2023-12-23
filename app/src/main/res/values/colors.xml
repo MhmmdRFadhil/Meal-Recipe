@@ -65,4 +65,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_edittext">#F3F5F7</color>
     <color name="secondary_color">#757575</color>
+    <color name="semi_primary_color">#4D6750A4</color>
 </resources>

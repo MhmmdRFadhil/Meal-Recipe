@@ -12,16 +12,18 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ryz.mealrecipe.common.Resource
 import com.ryz.mealrecipe.common.getBackStackData
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.FragmentHomeBinding
 import com.ryz.mealrecipe.ui.adapter.CategoryAdapter
+import com.ryz.mealrecipe.ui.adapter.CategoryAdapterCallback
 import com.ryz.mealrecipe.ui.adapter.MealAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), View.OnClickListener {
+class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var mealAdapter: MealAdapter
+    private var mealName = "Beef"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +49,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         getCategoryList()
         getMealList()
+
         setupClickListener()
         setupTextWatcher()
         getFilter()
@@ -114,7 +118,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun getMealList() {
-        homeViewModel.getMealByCategory("Seafood")
+        homeViewModel.getMealByCategory(mealName)
         homeViewModel.filterCategory.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Resource.Loading -> {}
@@ -147,9 +151,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.rvCategory.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            categoryAdapter = CategoryAdapter(type)
+            categoryAdapter = CategoryAdapter(type, this@HomeFragment)
             adapter = categoryAdapter
             categoryAdapter.submitList(data)
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+
+            if (data?.isNotEmpty() == true) {
+                mealName = when(type) {
+                    0 -> data[0]?.strCategory ?: ""
+                    1 -> data[0]?.strArea ?: ""
+                    else -> data[0]?.strCategory ?: ""
+                }
+            }
         }
     }
 
@@ -189,5 +202,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(data: MealEntity, position: Int) {
+        mealName = when (type) {
+            0 -> data.strCategory.toString()
+            1 -> data.strArea.toString()
+            else -> data.strCategory.toString()
+        }
+        Log.d("mealName", "Category: ${data.strCategory}, Area: ${data.strArea}")
     }
 }

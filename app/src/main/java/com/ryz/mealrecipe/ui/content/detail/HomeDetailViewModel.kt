@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ryz.mealrecipe.common.ErrorHelper
 import com.ryz.mealrecipe.common.Resource
+import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.data.remote.response.MealResponse
 import com.ryz.mealrecipe.data.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,16 +19,27 @@ import javax.inject.Inject
 class HomeDetailViewModel @Inject constructor(private val repository: RecipeRepository) :
     ViewModel() {
 
-    private var _homeDetail = MutableLiveData<Resource<MealResponse>>()
+    private val _homeDetail = MutableLiveData<Resource<MealResponse>>()
     val homeDetail: LiveData<Resource<MealResponse>> = _homeDetail
 
     fun getHomeDetail(id: String) = viewModelScope.launch {
         repository.lookUpWithId(id).onStart {
             _homeDetail.postValue(Resource.Loading())
         }.catch { exception ->
-            _homeDetail.postValue(Resource.Error(exception.message))
+            val errorMessage = ErrorHelper.getErrorMessage(exception)
+            _homeDetail.postValue(Resource.Error(errorMessage))
         }.collect { result ->
             _homeDetail.postValue(Resource.Success(result))
         }
     }
+
+    fun insertRecipe(data: MealEntity) = viewModelScope.launch {
+        repository.insertRecipe(data)
+    }
+
+    fun deleteRecipe(id: String) = viewModelScope.launch {
+        repository.deleteRecipe(id)
+    }
+
+    fun isMealExists(id: String): Int = repository.isRowExists(id)
 }

@@ -16,4 +16,5 @@ object Versions {
     const val roomVersion = "2.6.1"
     const val glideVersion = "4.16.0"
     const val paletteVersion = "1.0.0"
+    const val flexboxVersion = "3.0.0"
 }
