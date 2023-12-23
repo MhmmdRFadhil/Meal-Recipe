@@ -28,6 +28,9 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
     private val _filterArea = MutableLiveData<Resource<MealResponse>>()
     val filterArea: LiveData<Resource<MealResponse>> = _filterArea
 
+    private val _searchMeal = MutableLiveData<Resource<MealResponse>>()
+    val searchMeal: LiveData<Resource<MealResponse>> = _searchMeal
+
     fun getCategoryList() = viewModelScope.launch {
         repository.listByCategory().onStart {
             _categoryList.postValue(Resource.Loading())
@@ -65,6 +68,16 @@ class HomeViewModel @Inject constructor(private val repository: RecipeRepository
             _filterArea.postValue(Resource.Error(exception.message))
         }.collect { result ->
             _filterArea.postValue(Resource.Success(result))
+        }
+    }
+
+    fun searchMeal(name: String) = viewModelScope.launch {
+        repository.searchMealByName(name).onStart {
+            _searchMeal.postValue(Resource.Loading())
+        }.catch { exception ->
+            _searchMeal.postValue(Resource.Error(exception.message))
+        }.collect { result ->
+            _searchMeal.postValue(Resource.Success(result))
         }
     }
 }

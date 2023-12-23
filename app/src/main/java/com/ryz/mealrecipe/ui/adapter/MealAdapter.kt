@@ -11,6 +11,10 @@ import com.ryz.mealrecipe.databinding.RowItemMealBinding
 
 class MealAdapter(private val clickListener: (String) -> Unit) :
     ListAdapter<MealEntity, MealAdapter.MealViewHolder>(DIFF_CALLBACK) {
+
+    private var dataList: ArrayList<MealEntity> = ArrayList()
+    private var dataListFiltered: ArrayList<MealEntity> = ArrayList()
+
     inner class MealViewHolder(private val binding: RowItemMealBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MealEntity) {
@@ -22,6 +26,12 @@ class MealAdapter(private val clickListener: (String) -> Unit) :
                 }
             }
         }
+    }
+
+    fun add(list: List<MealEntity>) {
+        dataList = list as ArrayList<MealEntity>
+        dataListFiltered = dataList
+        submitList(dataListFiltered.sortedBy { it.strMeal })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MealViewHolder {

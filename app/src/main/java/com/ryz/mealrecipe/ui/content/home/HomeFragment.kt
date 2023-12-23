@@ -1,6 +1,8 @@
 package com.ryz.mealrecipe.ui.content.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +47,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         getCategoryList()
         getMealList()
         setupClickListener()
+        setupTextWatcher()
         getFilter()
     }
 
@@ -55,30 +58,24 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun setupTextWatcher() {
+        binding.etSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                getSearchData(p0.toString())
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+    }
+
     private fun getFilter() {
         getBackStackData<Int>("filter_recipe") { result ->
             type = result
             getCategoryList()
-        }
-    }
-
-    private fun showCategoryRecyclerView(data: List<MealEntity?>?, type: Int) {
-        binding.rvCategory.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-            categoryAdapter = CategoryAdapter(type)
-            adapter = categoryAdapter
-            categoryAdapter.submitList(data)
-        }
-    }
-
-    private fun showMealRecyclerView(data: List<MealEntity?>?) {
-        binding.rvMeal.apply {
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(activity, 2)
-            mealAdapter = MealAdapter(::onClickItem)
-            adapter = mealAdapter
-            mealAdapter.submitList(data)
         }
     }
 
@@ -128,6 +125,41 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
                 is Resource.Error -> Log.d("errorMsg", "${result.message}")
             }
+        }
+    }
+
+    private fun getSearchData(name: String) {
+        homeViewModel.searchMeal(name)
+        homeViewModel.searchMeal.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    Log.d("mealCategory", "${result.data?.meals}")
+                    showMealRecyclerView(result.data?.meals)
+                }
+
+                is Resource.Error -> Log.d("errorMsg", "${result.message}")
+            }
+        }
+    }
+
+    private fun showCategoryRecyclerView(data: List<MealEntity?>?, type: Int) {
+        binding.rvCategory.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            categoryAdapter = CategoryAdapter(type)
+            adapter = categoryAdapter
+            categoryAdapter.submitList(data)
+        }
+    }
+
+    private fun showMealRecyclerView(data: List<MealEntity>?) {
+        binding.rvMeal.apply {
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(activity, 2)
+            mealAdapter = MealAdapter(::onClickItem)
+            adapter = mealAdapter
+            mealAdapter.submitList(data)
         }
     }
 
