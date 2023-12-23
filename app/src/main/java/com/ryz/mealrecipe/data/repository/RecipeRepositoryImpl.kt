@@ -52,7 +52,7 @@ class RecipeRepositoryImpl @Inject constructor(
         emit(response)
     }.flowOn(Dispatchers.IO)
 
-    override suspend fun lookUpWithId(mealId: Int): Flow<MealResponse> = flow {
+    override suspend fun lookUpWithId(mealId: String): Flow<MealResponse> = flow {
         val response = service.lookUpWithId(mealId)
         emit(response)
     }.flowOn(Dispatchers.IO)

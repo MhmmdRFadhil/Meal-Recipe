@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeFragment_to_filterDialogFragment"
             app:destination="@id/filterDialogFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_homeDetailFragment"
+            app:destination="@id/homeDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookmarkFragment"
@@ -38,4 +41,18 @@
             app:argType="integer"
             android:defaultValue="0" />
     </dialog>
+    <fragment
+        android:id="@+id/homeDetailFragment"
+        android:name="com.ryz.mealrecipe.ui.content.detail.HomeDetailFragment"
+        android:label="fragment_home_detail"
+        tools:layout="@layout/fragment_home_detail" >
+        <action
+            android:id="@+id/action_homeDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+        <argument
+            android:name="idMeal"
+            app:argType="string" />
+    </fragment>
 </navigation>

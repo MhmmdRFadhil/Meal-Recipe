@@ -28,6 +28,6 @@ interface ApiService {
 
     @GET("api/json/v1/1/lookup.php")
     suspend fun lookUpWithId(
-        @Query("i") mealId: Int
+        @Query("i") mealId: String
     ): MealResponse
 }

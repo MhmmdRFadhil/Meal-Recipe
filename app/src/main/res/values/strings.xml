@@ -4,10 +4,14 @@
     <string name="title_1">Find Your Best</string>
     <string name="subtitle_1">Meal Recipes</string>
     <string name="title_search">Search Recipes</string>
-    <string name="title_recipe_filter">Filter resep</string>
-    <string name="title_based_on">Berdasarkan</string>
-    <string name="title_meal">Makanan</string>
-    <string name="title_area">Area</string>
-    <string name="title_apply">Pasang</string>
-    <string name="title_cancel">Batal</string>
+    <string name="title_recipe_filter">Recipe filter</string>
+    <string name="title_based_on">Based on</string>
+    <string name="title_meal">Meals</string>
+    <string name="title_area">Areas</string>
+    <string name="title_apply">Apply</string>
+    <string name="title_cancel">Cancel</string>
+    <string name="title_description">Description</string>
+    <string name="title_instruction">Instruction</string>
+    <string name="title_ingredient">Ingredient</string>
+    <string name="title_recipe">Recipe</string>
 </resources>

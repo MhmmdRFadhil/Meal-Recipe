@@ -28,3 +28,8 @@ fun <T : Any> Fragment.getBackStackData(
 fun ImageView.loadImageUrl(image: String?) {
     Glide.with(this).load(image).into(this)
 }
+
+fun addItemToList(item: String?, list: MutableList<String>) {
+    if (item.isNullOrEmpty()) return
+    else list.add(item)
+}

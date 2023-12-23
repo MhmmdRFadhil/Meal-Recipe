@@ -76,7 +76,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.rvMeal.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(activity, 2)
-            mealAdapter = MealAdapter()
+            mealAdapter = MealAdapter(::onClickItem)
             adapter = mealAdapter
             mealAdapter.submitList(data)
         }
@@ -129,6 +129,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 is Resource.Error -> Log.d("errorMsg", "${result.message}")
             }
         }
+    }
+
+    private fun onClickItem(id: String) {
+        val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(id)
+        findNavController().navigate(action)
     }
 
     override fun onClick(p0: View?) {

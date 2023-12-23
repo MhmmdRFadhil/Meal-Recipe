@@ -10,4 +10,8 @@
     <string name="title_area">Area</string>
     <string name="title_apply">Pasang</string>
     <string name="title_cancel">Batal</string>
+    <string name="title_description">Deskripsi</string>
+    <string name="title_instruction">Instruksi</string>
+    <string name="title_ingredient">Bahan</string>
+    <string name="title_recipe">Resep</string>
 </resources>

@@ -14,5 +14,5 @@ interface RecipeRepository {
     suspend fun listByArea(): Flow<MealResponse>
     suspend fun filterByCategory(categoryName: String): Flow<MealResponse>
     suspend fun filterByArea(areaName: String): Flow<MealResponse>
-    suspend fun lookUpWithId(mealId: Int): Flow<MealResponse>
+    suspend fun lookUpWithId(mealId: String): Flow<MealResponse>
 }

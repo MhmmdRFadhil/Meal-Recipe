@@ -9,13 +9,17 @@ import com.ryz.mealrecipe.common.loadImageUrl
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.RowItemMealBinding
 
-class MealAdapter : ListAdapter<MealEntity, MealAdapter.MealViewHolder>(DIFF_CALLBACK) {
+class MealAdapter(private val clickListener: (String) -> Unit) :
+    ListAdapter<MealEntity, MealAdapter.MealViewHolder>(DIFF_CALLBACK) {
     inner class MealViewHolder(private val binding: RowItemMealBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MealEntity) {
             with(binding) {
                 tvMeal.text = data.strMeal
                 imgMeal.loadImageUrl(data.strMealThumb)
+                itemView.setOnClickListener {
+                    clickListener(data.idMeal.toString())
+                }
             }
         }
     }
