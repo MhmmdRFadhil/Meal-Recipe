@@ -9,7 +9,7 @@ object Dependencies {
         val core by lazy { "androidx.core:core-ktx:${Versions.coreVersion}" }
         val appCompat by lazy { "androidx.appcompat:appcompat:${Versions.appCompatVersion}" }
         val material by lazy { "com.google.android.material:material:${Versions.materialVersion}" }
-        val constrainLayout by lazy { "androidx.constraintlayout:constraintlayout:${Versions.constrainVersion}" }
+        val constraintLayout by lazy { "androidx.constraintlayout:constraintlayout:${Versions.constrainVersion}" }
         val jUnit by lazy { "junit:junit:${Versions.jUnitVersion}" }
         val jUnitTest by lazy { "androidx.test.ext:junit:${Versions.jUnitTestVersion}" }
         val espresso by lazy { "androidx.test.espresso:espresso-core:${Versions.espressoVersion}" }

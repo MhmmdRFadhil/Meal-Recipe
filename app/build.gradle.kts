@@ -80,7 +80,7 @@ dependencies {
     implementation(Dependencies.Deps.core)
     implementation(Dependencies.Deps.appCompat)
     implementation("com.google.android.material:material:1.11.0")
-    implementation(Dependencies.Deps.constrainLayout)
+    implementation(Dependencies.Deps.constraintLayout)
 
     // VIEW MODEL
     implementation(Dependencies.Deps.lifecycleLiveData)

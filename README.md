@@ -2,27 +2,27 @@
 
 ## Screenshot
 <p align="center">
-  <img src="/screenshoot/Home.png"
+  <img src="/screenshot/Home.png"
         alt="Home"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Detail.png"
+  <img src="/screenshot/Detail.png"
         alt="Detail"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Detail_2.png"
+  <img src="/screenshot/Detail_2.png"
         alt="Detail2"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Filter.png"
+  <img src="/screenshot/Filter.png"
         alt="Filter"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Search.png"
+  <img src="/screenshot/Search.png"
         alt="Search"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Bookmark.png"
+  <img src="/screenshot/Bookmark.png"
         alt="Bookmark"    
         style="margin-right: 50px;"    
         width="250" />    
