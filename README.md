@@ -1,9 +1,5 @@
 # Meal Recipe
 
-
-## MAD SCORE
-![alt text](https://github.com/MhmmdRFadhil/BAJP-Final-Submission/blob/master/screenshot/summary.png)
-
 ## Screenshot
 <p align="center">
   <img src="/screenshot/Home.png"
