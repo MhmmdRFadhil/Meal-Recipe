@@ -17,4 +17,6 @@
     <string name="title_bookmark">Penanda</string>
     <string name="title_tags">Tag</string>
     <string name="title_trailer">Trailer resep makanan</string>
+    <string name="title_empty_data">Tidak ada data</string>
+    <string name="title_empty_data_description">Data yang dicari tidak ditemukan</string>
 </resources>

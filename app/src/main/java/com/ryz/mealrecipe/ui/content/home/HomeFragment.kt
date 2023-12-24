@@ -68,6 +68,7 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
     private fun setupTextWatcher() {
         binding.etSearch.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN) {
+                mealAdapter.submitList(ArrayList())
                 getSearchData(binding.etSearch.text.toString())
                 clearFocusAndHideSoftInput(binding.etSearch)
             }
@@ -179,7 +180,12 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
                 is Resource.Success -> {
                     binding.loading.root.isVisible = false
                     Log.d("mealCategory", "${result.data?.meals}")
-                    showMealRecyclerView(result.data?.meals)
+                    if (result.data?.meals.isNullOrEmpty()) {
+                        binding.emptyData.root.isVisible = true
+                    } else {
+                        binding.emptyData.root.isVisible = false
+                        showMealRecyclerView(result.data?.meals)
+                    }
                 }
 
                 is Resource.Error -> {
