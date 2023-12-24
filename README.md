@@ -10,7 +10,7 @@
         alt="Detail"    
         style="margin-right: 50px;"    
         width="250" />
-  <img src="/screenshoot/Detail.png"
+  <img src="/screenshoot/Detail_2.png"
         alt="Detail2"    
         style="margin-right: 50px;"    
         width="250" />
