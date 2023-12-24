@@ -114,6 +114,9 @@ dependencies {
     // FLEXBOX
     implementation(Dependencies.Deps.flexbox)
 
+    // LOTTIE
+    implementation(Dependencies.Deps.lottie)
+
     // TESTING
     testImplementation(Dependencies.Deps.jUnit)
     androidTestImplementation(Dependencies.Deps.jUnitTest)

@@ -1,12 +1,14 @@
 package com.ryz.mealrecipe.ui.content.home
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ryz.mealrecipe.common.Resource
 import com.ryz.mealrecipe.common.getBackStackData
+import com.ryz.mealrecipe.common.hideSoftInput
+import com.ryz.mealrecipe.common.showMessage
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.FragmentHomeBinding
 import com.ryz.mealrecipe.ui.adapter.CategoryAdapter
@@ -34,7 +38,6 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
 
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var mealAdapter: MealAdapter
-    private var mealName = "Beef"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,23 +66,20 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
     }
 
     private fun setupTextWatcher() {
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        binding.etSearch.setOnEditorActionListener { _, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN) {
+                getSearchData(binding.etSearch.text.toString())
+                clearFocusAndHideSoftInput(binding.etSearch)
             }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                getSearchData(p0.toString())
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
+            true
+        }
     }
 
     private fun getFilter() {
         getBackStackData<Int>("filter_recipe") { result ->
             type = result
             getCategoryList()
+            getMealList()
         }
     }
 
@@ -89,13 +89,20 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
                 homeViewModel.getCategoryList()
                 homeViewModel.categoryList.observe(viewLifecycleOwner) { result ->
                     when (result) {
-                        is Resource.Loading -> {}
+                        is Resource.Loading -> {
+                            binding.loading.root.isVisible = true
+                        }
+
                         is Resource.Success -> {
+                            binding.loading.root.isVisible = false
                             Log.d("listCategory", "${result.data?.meals}")
                             showCategoryRecyclerView(result.data?.meals, 0)
                         }
 
-                        is Resource.Error -> Log.d("errorMsg", "${result.message}")
+                        is Resource.Error -> {
+                            binding.loading.root.isVisible = false
+                            requireContext().showMessage(result.message)
+                        }
                     }
                 }
             }
@@ -104,13 +111,17 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
                 homeViewModel.getAreaList()
                 homeViewModel.areaList.observe(viewLifecycleOwner) { result ->
                     when (result) {
-                        is Resource.Loading -> {}
+                        is Resource.Loading -> binding.loading.root.isVisible = true
                         is Resource.Success -> {
+                            binding.loading.root.isVisible = false
                             Log.d("AreaCategory", "${result.data?.meals}")
                             showCategoryRecyclerView(result.data?.meals, 1)
                         }
 
-                        is Resource.Error -> Log.d("errorMsg", "${result.message}")
+                        is Resource.Error -> {
+                            binding.loading.root.isVisible = false
+                            requireContext().showMessage(result.message)
+                        }
                     }
                 }
             }
@@ -118,16 +129,44 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
     }
 
     private fun getMealList() {
-        homeViewModel.getMealByCategory(mealName)
-        homeViewModel.filterCategory.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Resource.Loading -> {}
-                is Resource.Success -> {
-                    Log.d("mealCategory", "${result.data?.meals}")
-                    showMealRecyclerView(result.data?.meals)
-                }
+        Log.d("Type", "$type")
+        when (type) {
+            0 -> {
+                homeViewModel.getMealByCategory("Beef")
+                homeViewModel.filterCategory.observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Resource.Loading -> binding.loading.root.isVisible = true
+                        is Resource.Success -> {
+                            binding.loading.root.isVisible = false
+                            Log.d("mealCategory", "${result.data?.meals}")
+                            showMealRecyclerView(result.data?.meals)
+                        }
 
-                is Resource.Error -> Log.d("errorMsg", "${result.message}")
+                        is Resource.Error -> {
+                            binding.loading.root.isVisible = false
+                            requireContext().showMessage(result.message)
+                        }
+                    }
+                }
+            }
+
+            1 -> {
+                homeViewModel.getMealByArea("American")
+                homeViewModel.filterArea.observe(viewLifecycleOwner) { result ->
+                    when (result) {
+                        is Resource.Loading -> binding.loading.root.isVisible = true
+                        is Resource.Success -> {
+                            binding.loading.root.isVisible = false
+                            Log.d("mealArea", "${result.data?.meals}")
+                            showMealRecyclerView(result.data?.meals)
+                        }
+
+                        is Resource.Error -> {
+                            binding.loading.root.isVisible = false
+                            requireContext().showMessage(result.message)
+                        }
+                    }
+                }
             }
         }
     }
@@ -136,13 +175,18 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
         homeViewModel.searchMeal(name)
         homeViewModel.searchMeal.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Resource.Loading -> {}
+                is Resource.Loading -> binding.loading.root.isVisible = true
                 is Resource.Success -> {
+                    binding.loading.root.isVisible = false
                     Log.d("mealCategory", "${result.data?.meals}")
                     showMealRecyclerView(result.data?.meals)
                 }
 
-                is Resource.Error -> Log.d("errorMsg", "${result.message}")
+                is Resource.Error -> {
+                    binding.loading.root.isVisible = false
+                    requireContext().showMessage(result.message)
+                }
+
             }
         }
     }
@@ -155,14 +199,6 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
             adapter = categoryAdapter
             categoryAdapter.submitList(data)
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
-            if (data?.isNotEmpty() == true) {
-                mealName = when(type) {
-                    0 -> data[0]?.strCategory ?: ""
-                    1 -> data[0]?.strArea ?: ""
-                    else -> data[0]?.strCategory ?: ""
-                }
-            }
         }
     }
 
@@ -179,6 +215,11 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
     private fun onClickItem(id: String) {
         val action = HomeFragmentDirections.actionHomeFragmentToHomeDetailFragment(id)
         findNavController().navigate(action)
+    }
+
+    private fun clearFocusAndHideSoftInput(editText: EditText) {
+        editText.clearFocus()
+        requireContext().hideSoftInput(editText)
     }
 
     override fun onClick(p0: View?) {
@@ -205,11 +246,10 @@ class HomeFragment : Fragment(), View.OnClickListener, CategoryAdapterCallback {
     }
 
     override fun onClick(data: MealEntity, position: Int) {
-        mealName = when (type) {
-            0 -> data.strCategory.toString()
-            1 -> data.strArea.toString()
-            else -> data.strCategory.toString()
-        }
         Log.d("mealName", "Category: ${data.strCategory}, Area: ${data.strArea}")
+        when (type) {
+            0 -> homeViewModel.getMealByCategory(data.strCategory.toString())
+            1 -> homeViewModel.getMealByArea(data.strArea.toString())
+        }
     }
 }

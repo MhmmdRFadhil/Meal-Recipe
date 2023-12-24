@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ryz.mealrecipe.R
 import com.ryz.mealrecipe.common.Resource
 import com.ryz.mealrecipe.common.loadImageUrl
+import com.ryz.mealrecipe.common.showMessage
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.FragmentHomeDetailBinding
 import com.ryz.mealrecipe.ui.adapter.SectionPagerAdapter
@@ -81,13 +83,17 @@ class HomeDetailFragment : Fragment(), View.OnClickListener {
         homeDetailViewModel.getHomeDetail(args.idMeal)
         homeDetailViewModel.homeDetail.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Resource.Loading -> {}
+                is Resource.Loading -> binding.loading.root.isVisible = true
                 is Resource.Success -> {
+                    binding.loading.root.isVisible = false
                     Log.d("dataMeal", "${result.data?.meals}")
                     setHomeDetail(result.data?.meals)
                 }
 
-                is Resource.Error -> {}
+                is Resource.Error -> {
+                    binding.loading.root.isVisible = false
+                    requireContext().showMessage(result.message)
+                }
             }
         }
     }

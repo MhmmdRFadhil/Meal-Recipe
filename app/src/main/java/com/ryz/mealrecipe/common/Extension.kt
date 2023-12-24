@@ -1,6 +1,10 @@
 package com.ryz.mealrecipe.common
 
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -54,4 +58,21 @@ fun MaterialToolbar.customToolbar(
             setNavigationOnClickListener(null)
         }
     }
+}
+
+fun extractVideoId(videoUrl: String): String {
+    val regex =
+        "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*"
+    val pattern = Regex(regex)
+    val matchResult = pattern.find(videoUrl)
+    return matchResult?.value.orEmpty()
+}
+
+fun Context.showMessage(message: String?) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
+fun Context.hideSoftInput(view: View) {
+    val im = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    im.hideSoftInputFromWindow(view.windowToken, InputMethodManager.RESULT_UNCHANGED_SHOWN)
 }

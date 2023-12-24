@@ -47,5 +47,8 @@ object Dependencies {
 
         // FLEXBOX
         val flexbox by lazy { "com.google.android.flexbox:flexbox:${Versions.flexboxVersion}" }
+
+        // LOTTIE
+        val lottie by lazy { "com.airbnb.android:lottie:${Versions.lottieVersion}" }
     }
 }

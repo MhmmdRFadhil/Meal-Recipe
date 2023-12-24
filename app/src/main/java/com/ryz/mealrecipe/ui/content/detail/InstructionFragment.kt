@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.ryz.mealrecipe.common.Resource
+import com.ryz.mealrecipe.common.showMessage
 import com.ryz.mealrecipe.data.local.entity.MealEntity
 import com.ryz.mealrecipe.databinding.FragmentInstructionBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,12 +42,17 @@ class InstructionFragment : Fragment() {
         homeDetailViewModel.getHomeDetail(id)
         homeDetailViewModel.homeDetail.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Resource.Loading -> {}
+                is Resource.Loading -> binding.loading.root.isVisible = true
                 is Resource.Success -> {
+                    binding.loading.root.isVisible = false
                     Log.d("mealDetail", "${result.data?.meals}")
                     setData(result.data?.meals)
                 }
-                is Resource.Error -> {}
+
+                is Resource.Error -> {
+                    binding.loading.root.isVisible = false
+                    requireContext().showMessage(result.message)
+                }
             }
         }
     }
