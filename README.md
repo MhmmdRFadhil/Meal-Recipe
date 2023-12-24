@@ -35,6 +35,7 @@ Some of the features in this application
 - Search Meal By Name
 - Filter Category By Meals and Area
 - Bookmark Meal Recipe
+- Dual Language (Bahasa and English)
 
 ## Library 
 Some of the libraries used in this application
